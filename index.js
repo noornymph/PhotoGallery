@@ -1,33 +1,48 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Photo Gallery</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Photo Gallery</h1>
-      <h2>Enter the number of photos</h2>
-      <input
-        type="number"
-        id="input"
-        class="input"
-        value="2"
-        min="1"
-        max="10"
-      />
-      <small class="errorMessage" id="errorMessage">Error Message</small>
-      <button class="btn" id="btn">Get Photos</button>
-      <div class="gallery" id="gallery">
-        <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="image">
-        <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="image">
-        <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="image">
-        <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="image">
-      </div>
-    </div>
-    <script src="index.js"></script>
-  </body>
-</html>
+const btnEl = document.getElementById("btn");
+const errorMessageEl = document.getElementById("errorMessage");
+const galleryEl = document.getElementById("gallery");
+
+async function fetchImage() {
+  const inputValue = document.getElementById("input").value;
+
+  if (inputValue > 10 || inputValue < 1) {
+    errorMessageEl.style.display = "block";
+    errorMessageEl.innerText = "Number should be between 0 and 11";
+    return;
+  }
+
+  imgs = "";
+
+  try {
+    btnEl.style.display = "none";
+    const loading = `<img src="spinner.svg" />`;
+    galleryEl.innerHTML = loading;
+    await fetch(
+      `https://api.unsplash.com/photos?per_page=${inputValue}&page=${Math.round(
+        Math.random() * 1000
+      )}&client_id=B8S3zB8gCPVCvzpAhCRdfXg_aki8PZM_q5pAyzDUvlc`
+    ).then((res) =>
+      res.json().then((data) => {
+        if (data) {
+          data.forEach((pic) => {
+            imgs += `
+            <img src=${pic.urls.small} alt="image"/>
+            `;
+            galleryEl.style.display = "block";
+            galleryEl.innerHTML = imgs;
+            btnEl.style.display = "block";
+            errorMessageEl.style.display = "none";
+          });
+        }
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    errorMessageEl.style.display = "block";
+    errorMessageEl.innerHTML = "An error happened, try again later";
+    btnEl.style.display = "block";
+    galleryEl.style.display = "none";
+  }
+}
+
+btnEl.addEventListener("click", fetchImage);
