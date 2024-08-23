@@ -12,8 +12,8 @@ body {
 .container {
     background-color: aliceblue;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 50px;
+    box-shadow: 20px 20px 20px rgba(0.3, 0.3, 0.3, 0.3);
     width: 90%;
     margin: 10px;
     display: flex;
@@ -34,6 +34,7 @@ h2 {
     border-radius: 5px;
     text-align: center;
     width: 100px;
+
 }
 
 .errorMessage {
@@ -50,14 +51,14 @@ h2 {
     margin: 20px 0;
     font-size: 18px;
     border-radius: 5px;
-    background-color: black;
+    background-color: green;
     color: aliceblue;
 
 }
 
 .btn:hover {
     color: aliceblue;
-    background-color: green;
+    background-color: lawngreen;
     cursor: pointer;
     transition: background-color 300ms ease-in-out;
 }
@@ -72,4 +73,31 @@ h2 {
 
 .gallery {
     display: none;
+}
+
+
+.input-box:checked+.label {
+    background-color: white;
+}
+
+
+
+@keyframes toggleOn {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(40px);
+    }
+}
+
+@keyframes toggleOff {
+    0% {
+        transform: translateX(40px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
 }

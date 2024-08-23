@@ -1,6 +1,20 @@
 const btnEl = document.getElementById("btn");
 const errorMessageEl = document.getElementById("errorMessage");
 const galleryEl = document.getElementById("gallery");
+const inputEl = document.querySelector(".input-box");
+const bodyEl = document.querySelector("body");
+
+inputEl.checked = JSON.parse(localStorage.getItem("mode"));
+
+updateBody();
+
+function updateBody() {
+  if (inputEl.checked) {
+    bodyEl.style.background = "black";
+  } else {
+    bodyEl.style.background = "white";
+  }
+}
 
 async function fetchImage() {
   const inputValue = document.getElementById("input").value;
@@ -46,3 +60,11 @@ async function fetchImage() {
 }
 
 btnEl.addEventListener("click", fetchImage);
+inputEl.addEventListener("input", () => {
+  updateBody();
+  updateLocalStorage();
+});
+
+function updateLocalStorage() {
+  localStorage.setItem("mode", JSON.stringify(inputEl.checked));
+}
